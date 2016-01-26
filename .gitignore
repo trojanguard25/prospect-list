@@ -110,3 +110,6 @@ $RECYCLE.BIN/
 
 # Vim files
 *.swp
+
+# ignore data director
+data/*

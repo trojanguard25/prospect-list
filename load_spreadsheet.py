@@ -39,10 +39,10 @@ args = parser.parse_args()
 wb = xlrd.open_workbook(args.input)
 from xlrd.sheet import ctype_text
 
-print wb
+#print wb
 
 sheet_names = wb.sheet_names()
-print('Sheet Names', sheet_names)
+#print('Sheet Names', sheet_names)
 
 sheet = wb.sheet_by_name('Top 100s')
 
@@ -64,7 +64,7 @@ for col_idx in range(2,sheet.ncols):
         name += name2_obj.value
 
 
-    print name
+    #print name
     rankers.append(name)
 
     top100 = {}
@@ -76,13 +76,29 @@ for col_idx in range(2,sheet.ncols):
             player_name = getPlayerName(player_obj.value)
 
             top100[player_name] = rank
-            prospects[player_name] = True
+            prospects[player_name] = 0
 
     rankings[name] = top100
 
+out = ","
+for key in rankers:
+    out += key + ","
+print out
+
 keys = prospects.keys()
 keys.sort()
+#print len(keys)
+for key in keys:
+    out = "\"" + key + "\","
+    for ranker in rankers:
+        if key in rankings[ranker]:
+            out += str(rankings[ranker][key]) + ","
+            prospects[key] = prospects[key] + (150 - rankings[ranker][key])
+        else:
+            out += ","
+            prospects[key] = prospects[key] + 1
+
+    print out
+
 #for key in keys:
-#    print "\"" + key + "\""
-
-
+#    print "\"" + key + "\"," + str(prospects[key])
